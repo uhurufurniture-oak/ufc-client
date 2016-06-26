@@ -7,13 +7,14 @@ import { bootstrap } from '@angular/platform-browser-dynamic';
 * our providers/directives/pipes
 */
 import { PLATFORM_PROVIDERS } from './platform/browser';
-import { ENV_PROVIDERS } from './platform/environment';
+import { ENV_PROVIDERS, decorateComponentRef } from './platform/environment';
+
 
 /*
 * App Component
 * our top level component that holds all of our components
 */
-import { AppComponent } from './app';
+import { AppComponent, APP_PROVIDERS } from './app';
 import {
   FIREBASE_PROVIDERS, 
   defaultFirebase, 
@@ -31,7 +32,7 @@ export function main(initialHmrState?: any): Promise<any> {
   return bootstrap(AppComponent, [
     ...PLATFORM_PROVIDERS,
     ...ENV_PROVIDERS,
-    FIREBASE_PROVIDERS,
+    ...FIREBASE_PROVIDERS,
     defaultFirebase({
       apiKey: 'AIzaSyARs_f15bn2Zb0yBOB_MifZgufHTRzcY8A',
       authDomain: 'ufc-oak.firebaseapp.com',
@@ -41,8 +42,10 @@ export function main(initialHmrState?: any): Promise<any> {
     firebaseAuthConfig({
       provider: AuthProviders.Facebook,
       method: AuthMethods.Redirect
-    })
+    }),
+    ...APP_PROVIDERS,
   ])
+  .then(decorateComponentRef)
   .catch(err => console.error(err));
 
 }
