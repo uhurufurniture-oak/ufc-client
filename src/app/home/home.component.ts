@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
+import { RouteConfig } from "@angular/router-deprecated";
 
-import { XLarge } from './x-large';
+import { RouterActive } from '../router-active';
+import { HeaderComponent } from '../shared/header/header.component';
+import { SideBarComponent } from "../shared/sidebar/sidebar.component";
+
 
 @Component({
   // The selector is what angular internally uses
@@ -13,7 +17,9 @@ import { XLarge } from './x-large';
   // We need to tell Angular's compiler which directives are in our template.
   // Doing so will allow Angular to attach our behavior to an element
   directives: [
-    XLarge
+    RouterActive,
+    SideBarComponent,
+    HeaderComponent
   ],
   // We need to tell Angular's compiler which custom pipes are in our template.
   pipes: [ ],
@@ -22,6 +28,13 @@ import { XLarge } from './x-large';
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
   template: require('./home.html')
 })
+
+@RouteConfig([
+  { path: '/',      name: 'Index', component: Home, useAsDefault: true },
+  { path: '/home',  name: 'Home',  component: Home },
+  // Async load a component using Webpack's require with es6-promise-loader and webpack `require`
+  { path: '/about', name: 'About', loader: () => require('es6-promise!./about')('About') }
+])
 export class Home {
   // Set our default values
   localState = { value: '' };

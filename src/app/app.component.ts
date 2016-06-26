@@ -4,10 +4,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { RouteConfig } from '@angular/router-deprecated';
 
-import { Home } from './home';
-import { RouterActive } from './router-active';
-import { HeaderComponent } from './shared/header/header.component';
-import { SideBarComponent } from "./shared/sidebar/sidebar.component";
 
 /*
  * App Component
@@ -18,9 +14,6 @@ import { SideBarComponent } from "./shared/sidebar/sidebar.component";
   pipes: [ ],
   providers: [],
   directives: [
-    RouterActive,
-    SideBarComponent,
-    HeaderComponent
   ],
   encapsulation: ViewEncapsulation.None,
   styles: [
