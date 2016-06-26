@@ -11,6 +11,10 @@ import '@angular/common';
 import '@angular/http';
 import '@angular/router-deprecated';
 
+// Firebase
+import 'angularfire2';
+import 'firebase';
+
 // RxJS
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';

@@ -2,11 +2,12 @@
  * Angular 2 decorators and services
  */
 import { Component, ViewEncapsulation } from '@angular/core';
-import { RouteConfig, Router } from '@angular/router-deprecated';
+import { RouteConfig } from '@angular/router-deprecated';
 
-import { AppState } from './app.service';
 import { Home } from './home';
 import { RouterActive } from './router-active';
+import { HeaderComponent } from './shared/header/header.component';
+import { SideBarComponent } from "./shared/sidebar/sidebar.component";
 
 /*
  * App Component
@@ -15,55 +16,41 @@ import { RouterActive } from './router-active';
 @Component({
   selector: 'app',
   pipes: [ ],
-  providers: [ ],
-  directives: [ RouterActive ],
+  providers: [],
+  directives: [
+    RouterActive,
+    SideBarComponent,
+    HeaderComponent
+  ],
   encapsulation: ViewEncapsulation.None,
   styles: [
-    require('./app.css')
+    require('./shared/styles/pages.less')
   ],
-  template: `
-    <span router-active>
-      <button [routerLink]=" ['Index'] ">
-        Index
-      </button>
-    </span>
-    <span router-active>
-      <button [routerLink]=" ['Home'] ">
-        Home
-      </button>
-    </span>
-    <span router-active>
-      <button [routerLink]=" ['About'] ">
-        About
-      </button>
-    </span>
-
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-
-    <pre class="app-state">this.appState.state = {{ appState.state | json }}</pre>
-  `
+  template: require('./app.html')
 })
+
 @RouteConfig([
   { path: '/',      name: 'Index', component: Home, useAsDefault: true },
   { path: '/home',  name: 'Home',  component: Home },
   // Async load a component using Webpack's require with es6-promise-loader and webpack `require`
   { path: '/about', name: 'About', loader: () => require('es6-promise!./about')('About') }
 ])
-export class App {
-  angularclassLogo = 'assets/img/angularclass-avatar.png';
+export class AppComponent {
+  logo = 'assets/img/uhuru-logo.png';
   loading = false;
   name = 'Angular 2 Webpack Starter';
   url = 'https://twitter.com/AngularClass';
-
-  constructor(
-    public appState: AppState) {
+  views: Object[] = [
+    {
+      name: 'Home',
+      icon: 'home'
+    }
+  ];
+  constructor() {
 
   }
 
   ngOnInit() {
-    console.log('Initial App State', this.appState.state);
   }
 
 }

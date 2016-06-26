@@ -10,7 +10,7 @@ const helpers = require('./helpers');
  */
 // problem with copy-webpack-plugin
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('webpack-shell-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const HtmlElementsPlugin = require('./html-elements-plugin');
 
@@ -18,7 +18,7 @@ const HtmlElementsPlugin = require('./html-elements-plugin');
  * Webpack Constants
  */
 const METADATA = {
-  title: 'Angular2 Webpack Starter by @gdi2290 from @AngularClass',
+  title: 'Uhuru Furniture & Collectibles',
   baseUrl: '/',
   isDevServer: helpers.isWebpackDevServer()
 };
@@ -167,6 +167,11 @@ module.exports = {
       {
         test: /\.css$/,
         loaders: ['to-string-loader', 'css-loader']
+      },
+
+      {
+        test: /\.less$/,
+        loaders: ['raw-loader', 'less-loader']
       },
 
       /* Raw loader support for *.html

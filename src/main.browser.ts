@@ -13,7 +13,14 @@ import { ENV_PROVIDERS } from './platform/environment';
 * App Component
 * our top level component that holds all of our components
 */
-import { App, APP_PROVIDERS } from './app';
+import { AppComponent } from './app';
+import {
+  FIREBASE_PROVIDERS, 
+  defaultFirebase, 
+  firebaseAuthConfig, 
+  AuthProviders,
+  AuthMethods
+} from "angularfire2/angularfire2";
 
 /*
  * Bootstrap our Angular app with a top level component `App` and inject
@@ -21,10 +28,20 @@ import { App, APP_PROVIDERS } from './app';
  */
 export function main(initialHmrState?: any): Promise<any> {
 
-  return bootstrap(App, [
+  return bootstrap(AppComponent, [
     ...PLATFORM_PROVIDERS,
     ...ENV_PROVIDERS,
-    ...APP_PROVIDERS
+    FIREBASE_PROVIDERS,
+    defaultFirebase({
+      apiKey: 'AIzaSyARs_f15bn2Zb0yBOB_MifZgufHTRzcY8A',
+      authDomain: 'ufc-oak.firebaseapp.com',
+      databaseURL: 'https://ufc-oak.firebaseio.com',
+      storageBucket: 'ufc-oak.appspot.com'
+    }),
+    firebaseAuthConfig({
+      provider: AuthProviders.Facebook,
+      method: AuthMethods.Redirect
+    })
   ])
   .catch(err => console.error(err));
 
