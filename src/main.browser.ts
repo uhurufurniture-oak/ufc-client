@@ -2,6 +2,13 @@
  * Providers provided by Angular
  */
 import { bootstrap } from '@angular/platform-browser-dynamic';
+import {
+  FIREBASE_PROVIDERS,
+  defaultFirebase,
+  firebaseAuthConfig,
+  AuthProviders,
+  AuthMethods
+} from "angularfire2/angularfire2";
 /*
 * Platform and Environment
 * our providers/directives/pipes
@@ -15,23 +22,18 @@ import { ENV_PROVIDERS, decorateComponentRef } from './platform/environment';
 * our top level component that holds all of our components
 */
 import { AppComponent, APP_PROVIDERS } from './app';
-import {
-  FIREBASE_PROVIDERS, 
-  defaultFirebase, 
-  firebaseAuthConfig, 
-  AuthProviders,
-  AuthMethods
-} from "angularfire2/angularfire2";
+import {AUTH_PROVIDERS} from "./app/shared/auth/index";
 
 /*
  * Bootstrap our Angular app with a top level component `App` and inject
  * our Services and Providers into Angular's dependency injection
  */
-export function main(initialHmrState?: any): Promise<any> {
+export function main(): Promise<any> {
 
   return bootstrap(AppComponent, [
     ...PLATFORM_PROVIDERS,
     ...ENV_PROVIDERS,
+    ...AUTH_PROVIDERS,
     ...FIREBASE_PROVIDERS,
     defaultFirebase({
       apiKey: 'AIzaSyARs_f15bn2Zb0yBOB_MifZgufHTRzcY8A',
@@ -41,7 +43,8 @@ export function main(initialHmrState?: any): Promise<any> {
     }),
     firebaseAuthConfig({
       provider: AuthProviders.Facebook,
-      method: AuthMethods.Redirect
+      method: AuthMethods.Popup,
+      scope: ['manage_pages', 'publish_pages']
     }),
     ...APP_PROVIDERS,
   ])
@@ -66,11 +69,6 @@ export function main(initialHmrState?: any): Promise<any> {
  * Hot Module Reload
  * experimental version by @gdi2290
  */
-if ('development' === ENV && HMR === true) {
-  // activate hot module reload
-  let ngHmr = require('angular2-hmr');
-  ngHmr.hotModuleReplacement(main, module);
-} else {
-  // bootstrap when document is ready
-  document.addEventListener('DOMContentLoaded', () => main());
-}
+
+document.addEventListener('DOMContentLoaded', () => main());
+

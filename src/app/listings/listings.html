@@ -1,0 +1,89 @@
+<p-dialog header="Add New Post" [(visible)]="addNewPost" width=600 modal="modal" responsive="responsive">
+  <ui-progress-bar [show]="showProgress" [progress]="uploader.progress"></ui-progress-bar>
+  <div class="panel panel-transparent">
+    <div class="panel-heading">
+      <div class="panel-title">
+        Listing Information
+      </div>
+    </div>
+    <div class="panel-body">
+      <form role="form" autocomplete="off" novalidate="novalidate" (ngSubmit)="onSubmit()" #postForm="ngForm">
+        <div class="row clearfix">
+          <div class="col-sm-8">
+            <div class="form-group form-group-default">
+              <label for="title">Posting Title</label>
+              <input type="text" class="form-control" name="title" id="title" placeholder="Title" [(ngModel)]="newListing.title">
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-group form-group-default input-group">
+              <label for="price">Price</label>
+              <input type="text" class="form-control usd" name="price" id="price" placeholder="Price" [(ngModel)]="newListing.price">
+              <span class="input-group-addon">USD</span>
+            </div>
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="well ui-drop-zone" ng2FileDrop [ngClass]="{'ui-drop-zone-over': hasDropZoneOver}"
+               (fileOver)="fileOverBase($event)"
+               (onFileDrop)="handleFileDrop()"
+               [uploader]="uploader">
+            Drop Image here
+            <input type="file" name="postImg" ng2FileSelect [uploader]="uploader" (click)="handleFileDrop()"/>
+            <input type="hidden" name="imgLink" id="imgLink"
+                   [(ngModel)] = "newListing.imgLink"
+            >
+          </div>
+        </div>
+        <div class="pull-right">
+          <button class="btn btn-success" type="submit">Submit</button>
+          <button class="btn btn-default" (click)="resetForm()">
+            <i class="pg-close"></i>
+            Clear
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</p-dialog>
+
+
+<div class="container-fluid container-fixed-lg bg-white">
+  <div class="overlay-load" [class.show]="isLoading"></div>
+  <div class="panel panel-transparent">
+    <div class="panel-heading">
+      <div class="panel-title">Currently Listed Items</div>
+      <div class="pull-right">
+        <div class="col-xs-12">
+          <button class="btn btn-primary btn-cons" (click)="showAddPostDialog()">
+            <i class="fa fa-plus">
+              Add Post
+            </i>
+          </button>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <p-dataTable [value]="listings" styleClass="listing-table" selectionMode="multiple" [(selection)]="selectedListings"
+                     [paginator]="true" [rows]="50" [totalRecords]="576">
+          <p-column field="status" header="Status" [sortable]="true" [style]="{'width':'10%'}"></p-column>
+          <p-column field="title" header="Title" [sortable]="true" [style]="{'width':'60%'}">
+            <template let-col let-listing="rowData">
+              <a href="{{listing['postLink']}}">{{listing[col.field]}}</a>
+            </template>
+          </p-column>
+          <p-column field="postingDate" header="Posting Date" [sortable]="true" [style]="{'width':'20%'}">
+            <template let-listing="rowData" let-col>
+              <span>{{listing[col.field] | date:'medium'}}</span>
+            </template>
+          </p-column>
+          <p-column field="id" header="ID" [sortable]="true" [style]="{'width':'10%'}"></p-column>
+        </p-dataTable>
+      </div>
+    </div>
+  </div>
+
+</div>

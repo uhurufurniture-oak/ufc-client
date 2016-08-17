@@ -1,5 +1,7 @@
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation} from '@angular/core';
+import {LayoutService} from "../layout/layout.service";
+import {AuthService} from "../auth/auth.service";
 
 @Component({
   selector: 'uh-header',
@@ -15,11 +17,21 @@ import { Component, ViewEncapsulation } from '@angular/core';
 
 export class HeaderComponent {
   name = 'Uhuru Furniture & Collectibles';
-  constructor() {
+  private _isSidebarOpen: boolean = false;
+  constructor(private _layoutService: LayoutService, private _auth: AuthService) {
+    _layoutService.isSidebarOpen.subscribe((open) => this._isSidebarOpen = open);
     
+  }
+
+  toggleSidebar(){
+    if(this._isSidebarOpen) {
+      this._layoutService.closeSidebar();
+    } else {
+      this._layoutService.openSidebar();
+    }
   }
   
   ngOnInit() {
-    console.log('HeaderComponent initialised');
+
   }
 }

@@ -42,7 +42,7 @@ module.exports = {
      *
      * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
      */
-    extensions: ['', '.ts', '.js'],
+    extensions: ['', '.ts', '.js', '.less'],
 
     /**
      * Make sure root is src
@@ -88,7 +88,11 @@ module.exports = {
         exclude: [
         // these packages have problems with their sourcemaps
         helpers.root('node_modules/rxjs'),
-        helpers.root('node_modules/@angular')
+        helpers.root('node_modules/@angular'),
+        helpers.root('node_modules/@ngrx'),
+        helpers.root('node_modules/@angular2-material'),
+        helpers.root('node_modules/angularfire2'),
+        helpers.root('node_modules/primeng')
       ]}
 
     ],
@@ -137,7 +141,7 @@ module.exports = {
        * See: https://github.com/webpack/raw-loader
        */
       { test: /\.css$/, loaders: ['to-string-loader', 'css-loader'], exclude: [helpers.root('src/index.html')] },
-
+      { test: /\.less$/, loaders: ['raw-loader', 'less-loader'], exclude: [helpers.root('src/index.html')]},
       /**
        * Raw loader support for *.html
        * Returns file content as string
